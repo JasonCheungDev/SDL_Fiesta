@@ -4,8 +4,11 @@
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 
-Renderable::Renderable(Shader shader, std::vector<glm::vec3> vertices, std::vector<unsigned int> indices)
+Renderable::Renderable(Shader* shader, const std::vector<glm::vec3>& vertices, const std::vector<unsigned int>& indices)
 {
+	position = glm::vec3(0, 0, 0);
+	rotation = glm::vec3(0, 0, 0);
+
 	// CREATE VBO 
 
 	/*glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -23,17 +26,19 @@ Renderable::Renderable(Shader shader, std::vector<glm::vec3> vertices, std::vect
 	unsigned int VBO;
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * vertices.size, &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 3 * indices.size, &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 3 * indices.size(), &indices[0], GL_STATIC_DRAW);
 	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	glBindVertexArray(0);	// unbind VAO 
+
+	indexCount = indices.size();
 }
 
 Renderable::~Renderable()
@@ -42,7 +47,7 @@ Renderable::~Renderable()
 
 glm::mat4 Renderable::GetModelMatrix()
 {
-	glm::mat4 m = glm::mat4();
+	glm::mat4 m = glm::mat4(1.0f);
 	m = glm::translate(m, position);
 	m = glm::rotate(m, rotation.x, glm::vec3(1, 0, 0));
 	m = glm::rotate(m, rotation.y, glm::vec3(0, 1, 0));

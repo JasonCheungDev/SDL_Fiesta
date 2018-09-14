@@ -2,9 +2,13 @@
 #include <vector>
 #include "Renderable.h"
 #include "Camera.h"
+#include "Shader.h"
 
 class RenderSystem
 {
+public:
+	Shader* shader; 
+
 public:
 	RenderSystem();
 	~RenderSystem();
@@ -21,10 +25,10 @@ public:
 
 	// I think this should be a pointer? 
 	// Sets the main camera to render from 
-	void SetCamera(Camera camera);
+	void SetCamera(Camera* camera);
 
 private: 
 	std::vector<Renderable> renderables; 
-	Camera mainCamera; 
+	Camera* mainCamera; 
 };
 

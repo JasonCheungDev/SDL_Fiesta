@@ -14,6 +14,8 @@ and may not be redistributed without written permission.*/
 #include <glm\glm.hpp>
 // Custom objects 
 #include "Shader.h"
+#include "Renderable.h"
+#include "RenderSystem.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -72,10 +74,11 @@ GLuint gVAO = 0;
 bool gRenderQuad = true;
 Shader* gShader;
 
-
+RenderSystem* gRenderSystem; 
 
 class Cube
 {
+public:
 	std::vector<glm::vec3> vertices = {
 		// Front
 		glm::vec3(1, -1, 1), // 0
@@ -275,7 +278,7 @@ bool initGL()
 	bool success = true;
 
 	//Generate program
-	gShader = new Shader("shaders/vertex.vs", "shaders/fragment.fs");
+	gShader = new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
 
 	// correct stuff 
 	float vertices[] = {
@@ -531,11 +534,27 @@ bool init()
 				}
 
 				// init OpenGL 
-				if (!initGL())
-				{
-					printf("Unable to initialize OpenGL!\n");
-					success = false; 
-				}
+				//if (!initGL())
+				//{
+				//	printf("Unable to initialize OpenGL!\n");
+				//	success = false; 
+				//}
+
+
+				Cube* c = new Cube();
+			
+				gShader = new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+				Renderable* r = new Renderable(gShader, c->vertices, c->indices);
+				Renderable* r2 = new Renderable(gShader, c->vertices, c->indices);
+				r->position = glm::vec3(0, 0, -5);
+				r2->position = glm::vec3(0, 0, 5);
+
+				Camera* cam = new Camera();
+				
+				gRenderSystem = new RenderSystem();
+				gRenderSystem->AddRenderable(*r);
+				gRenderSystem->AddRenderable(*r2);
+				gRenderSystem->SetCamera(cam);
 			}
 		}
 	}
@@ -689,7 +708,8 @@ int main(int argc, char* args[])
 					} 
 				} // end while ( event check) 
 
-				render();
+				// render();
+				gRenderSystem->Draw();
 				SDL_GL_SwapWindow(gWindow);
 
 			} // end game loop 
