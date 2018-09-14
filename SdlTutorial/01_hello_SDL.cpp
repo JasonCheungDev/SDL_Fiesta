@@ -73,18 +73,71 @@ bool gRenderQuad = true;
 Shader* gShader;
 
 
+
 class Cube
 {
-	GLfloat vertexData[8] =
-	{
-		-0.5f, -0.5f,
-		0.5f, -0.5f,
-		0.5f,  0.5f,
-		-0.5f,  0.5f
+	std::vector<glm::vec3> vertices = {
+		// Front
+		glm::vec3(1, -1, 1), // 0
+		glm::vec3(1, 1, 1), // 1
+		glm::vec3(-1, 1, 1), // 2
+		glm::vec3(-1, -1, 1), // 3
+
+		// Bac
+		glm::vec3(-1, -1, -1), // 4
+		glm::vec3(-1, 1, -1), // 5
+		glm::vec3(1, 1, -1), // 6
+		glm::vec3(1, -1, -1), // 7
+
+		// Lef
+		glm::vec3(-1, -1, 1), // 8
+		glm::vec3(-1, 1, 1), // 9
+		glm::vec3(-1, 1, -1), // 10
+		glm::vec3(-1, -1, -1), // 11
+
+		// Righ
+		glm::vec3(1, -1, -1), // 12
+		glm::vec3(1, 1, -1), // 13
+		glm::vec3(1, 1, 1), // 14
+		glm::vec3(1, -1, 1), // 15
+
+		// To
+		glm::vec3(1, 1, 1), // 16
+		glm::vec3(1, 1, -1), // 17
+		glm::vec3(-1, 1, -1), // 18
+		glm::vec3(-1, 1, 1), // 19
+
+		// Botto
+		glm::vec3(1, -1, -1), // 20
+		glm::vec3(1, -1, 1), // 21
+		glm::vec3(-1, -1, 1), // 22
+		glm::vec3(-1, -1, -1), // 23
 	};
 
-	GLuint indexData[4] = {
-		0, 1, 2, 3 
+	std::vector<unsigned int> indices = {
+		// Front
+		0, 1, 2,
+		2, 3, 0,
+
+		// Back
+		4, 5, 6,
+		6, 7, 4,
+
+		// Left
+		8, 9, 10,
+		10, 11, 8,
+
+		// Right
+		12, 13, 14,
+		14, 15, 12,
+
+		// Top
+		16, 17, 18,
+		18, 19, 16,
+
+		// Bottom
+		20, 21, 22,
+		22, 23, 20
 	};
 };
 
@@ -97,11 +150,7 @@ class Model
 	GLuint VBO, IBO;
 };
 
-struct Camera
-{
-	glm::vec3 position; 
-	glm::vec3 rotation; 
-};
+
 
 #pragma endregion
 
